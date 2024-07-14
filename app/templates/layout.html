@@ -36,11 +36,11 @@
                     <button class="cerrar-menu" id="cerrar"><i class="bi bi-x-square"></i></button>
 
                     <ul class="nav-lista">
-                        <li><a href="{{ url_for('main') }}" class="nav-link">Inicio</a></li>
-                        <li><a href="{{ url_for('candidatosYpropuestas') }}" class="nav-link">Candidatos</a></li>
-                        <li><a href="{{ url_for('encuesta') }}" class="nav-link">Encuesta</a></li>
-                        <li><a href="{{ url_for('comentarios') }}" class="nav-link">Comentarios</a></li>
-                        <li><a href="{{ url_for('contactanos') }}" class="nav-link">Contactanos</a></li>
+                        <li><a href="{{ url_for('main.main') }}" class="nav-link">Inicio</a></li>
+                        <li><a href="{{ url_for('main.candidatosYpropuestas') }}" class="nav-link">Candidatos</a></li>
+                        <li><a href="{{ url_for('main.encuesta') }}" class="nav-link">Encuesta</a></li>
+                        <li><a href="{{ url_for('main.comentarios') }}" class="nav-link">Comentarios</a></li>
+                        <li><a href="{{ url_for('main.contactanos') }}" class="nav-link">Contactanos</a></li>
                     </ul>
                 </nav>
             </header>
@@ -64,11 +64,11 @@
                 <div class="menufooter">
                     <ul>
                         <li class="menuNavF">NAVEGAR</li>
-                        <li><a href="{{ url_for('main') }}">Inicio</a></li>
-                        <li><a href="{{ url_for('candidatosYpropuestas') }}">Candidatos</a></li>
-                        <li><a href="{{ url_for('encuesta') }}">Encuesta</a></li>
-                        <li><a href="{{ url_for('comentarios') }}">Comentarios</a></li>
-                        <li><a href="{{ url_for('contactanos') }}">Contactanos</a></li>
+                        <li><a href="{{ url_for('main.main') }}">Inicio</a></li>
+                        <li><a href="{{ url_for('main.candidatosYpropuestas') }}">Candidatos</a></li>
+                        <li><a href="{{ url_for('main.encuesta') }}">Encuesta</a></li>
+                        <li><a href="{{ url_for('main.comentarios') }}">Comentarios</a></li>
+                        <li><a href="{{ url_for('main.contactanos') }}">Contactanos</a></li>
                     </ul>
                 </div>
 
