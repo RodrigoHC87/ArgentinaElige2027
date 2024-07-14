@@ -1,51 +1,34 @@
-import os
+from flask import render_template, request, redirect, url_for, flash, Blueprint
 
-from flask import Flask, render_template, request, redirect, url_for, flash
-
+from app.model import Comentarios, Mensaje, db
 from datetime import datetime
-from model import Comentarios, Mensaje, db
-from config import Config
-
-
-# ! Estructura básica de una aplicación Flask - Seguir implementando
 
 
 
-template_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
-app = Flask(__name__, template_folder=template_dir)
-
-app.config.from_object(Config)
-
-db.init_app(app)
-
-
-#- Establecer el contexto de la aplicación -#
-with app.app_context():
-    db.create_all()
-
+main_bp = Blueprint('main', __name__)
 
 #- Routes -#
 
-@app.route('/')
+@main_bp.route('/')
 def main():
     return render_template('index.html')
 
 
-@app.route('/candidatosYpropuestas')
+@main_bp.route('/candidatosYpropuestas')
 def candidatosYpropuestas():
     return render_template('candYprop.html')
 
 
-@app.route('/encuesta')
+@main_bp.route('/encuesta')
 def encuesta():
     return render_template('encuesta.html')
 
-@app.route('/encuestaForm', methods=['POST'])
+@main_bp.route('/encuestaForm', methods=['POST'])
 def encuestaForm():
-    return redirect(url_for('encuesta'))
+    return redirect(url_for('main.encuesta'))
 
 
-@app.route('/comentarios')
+@main_bp.route('/comentarios')
 def comentarios():
 
     # Consultar y mostrar comentarios utilizando SQLAlchemy
@@ -56,7 +39,7 @@ def comentarios():
 
 
 
-@app.route('/agregarComentario', methods=['GET', 'POST'])
+@main_bp.route('/agregarComentario', methods=['GET', 'POST'])
 def add_comentario():
     if request.method == 'POST':
 
@@ -75,12 +58,12 @@ def add_comentario():
         else:
             flash('Por favor completa todos los campos', 'error')
 
-        return redirect(url_for('comentarios'))
+        return redirect(url_for('main.comentarios'))
 
-    return redirect(url_for('comentarios'))
+    return redirect(url_for('main.comentarios'))
 
 
-@app.route('/borrar/<int:id>')
+@main_bp.route('/borrar/<int:id>')
 def delete_comentario(id):
     comentario = Comentarios.query.get(id)
     if comentario:
@@ -90,25 +73,25 @@ def delete_comentario(id):
     else:
         flash('Comentario no encontrado', 'error')
 
-    return redirect(url_for('comentarios'))
+    return redirect(url_for('main.comentarios'))
 
 
-@app.route('/editar/<int:id>', methods=['GET'])
+@main_bp.route('/editar/<int:id>', methods=['GET'])
 def get_contact(id):
     comentario = Comentarios.query.get(id)
     if comentario is None:
         flash('Comentario no encontrado', 'error')
-        return redirect(url_for('comentarios'))
+        return redirect(url_for('main.comentarios'))
 
     return render_template('edit_comentario.html', coment_modif=comentario)
 
 
-@app.route('/update/<int:id>', methods=['POST'])
+@main_bp.route('/update/<int:id>', methods=['POST'])
 def update_contact(id):
     comentario = Comentarios.query.get(id)
     if comentario is None:
         flash('Comentario no encontrado', 'error')
-        return redirect(url_for('comentarios'))
+        return redirect(url_for('main.comentarios'))
 
     if request.method == 'POST':
         fecha_hora = datetime.now()
@@ -124,18 +107,18 @@ def update_contact(id):
 
         db.session.commit()
         flash('Comentario actualizado correctamente', 'success')
-        return redirect(url_for('comentarios'))
+        return redirect(url_for('main.comentarios'))
 
     flash('No se pudo actualizar el comentario', 'error')
-    return redirect(url_for('comentarios'))
+    return redirect(url_for('main.comentarios'))
 
 
 
-@app.route('/contactanos')
+@main_bp.route('/contactanos')
 def contactanos():
     return render_template('contactanos.html')
 
-@app.route('/mensajes_contacto', methods=['POST'])
+@main_bp.route('/mensajes_contacto', methods=['POST'])
 def add_contacto():
     if request.method == 'POST':
         nombre = request.form['nombre']
@@ -165,10 +148,4 @@ def add_contacto():
         else:
             flash('Por favor completa todos los campos', 'error')
 
-        return redirect(url_for('contactanos'))
-
-
-
-
-if __name__ == "__main__":
-    app.run(port=4000, debug=True)
+        return redirect(url_for('main.contactanos'))
